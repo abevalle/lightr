@@ -2,6 +2,7 @@ const { Client } = require('tplink-smarthome-api');
 const client  = new Client();
 const bulb = client.getPlug({ host: '192.168.1.42' });
 
+
 function on() {
     // Search for all lights and turn them on.
     client.on('bulb-new', function (bulb) {
@@ -21,4 +22,8 @@ function off() {
             console.log('Bulb', bulb.alias, 'is now off!');
         });
     });
+    
+    client.startDiscovery();
 }
+
+off()

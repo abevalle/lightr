@@ -1,29 +1,44 @@
 const { Client } = require('tplink-smarthome-api');
 const client  = new Client();
-const bulb = client.getPlug({ host: '192.168.1.42' });
+const express = require('express')
+const inquirer = require('inquirer')
 
+const bulb = client.getBulb({ host: '192.168.1.42' });
 
 function on() {
-    // Search for all lights and turn them on.
-    client.on('bulb-new', function (bulb) {
-        console.log('Bulb found:', bulb.alias);
-        bulb.setPowerState(true).then(function () {
-            console.log('Bulb', bulb.alias, 'is now on!');
-        });
-    });
-
-    client.startDiscovery();
+    bulb.setPowerState(true);
 }
 
 function off() {
-    client.on('bulb-new', function (bulb) {
-        console.log('Bulb found:', bulb.alias);
-        bulb.setPowerState(false).then(function () {
-            console.log('Bulb', bulb.alias, 'is now off!');
-        });
-    });
-    
-    client.startDiscovery();
+    bulb.setPowerState(false);
 }
 
-off()
+function getStat() {
+    console.log(bulb.name)
+}
+
+getStat();
+
+/* inquirer
+  .prompt([
+    {
+      type: 'list',
+      name: 'lights',
+      message: 'How do you want the lights?',
+      choices: [
+        'On',
+        'Off',
+      ]
+    }
+  ])
+  .then(answers => {
+    console.log(JSON.stringify(answers, null, '  '));
+
+    if (answers.lights == 'On') {
+        on()
+    } else {
+        off()
+    }
+
+  });
+ */

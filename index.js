@@ -17,8 +17,6 @@ function getStat() {
     console.log(bulb.name)
 }
 
-getStat();
-
 /* inquirer
   .prompt([
     {

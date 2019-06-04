@@ -1,44 +1,30 @@
 const express = require('express');
 const app = express();
-const server = require('http').createServer(app);
-const io = require('socket.io')(server);
-const { Client } = require('tplink-smarthome-api');
-const client = new Client();
+const port = 3001;
+const lightr = require('./control.js')
 
-app.use(express.static(__dirname + '/'));
-app.get('/', function (req, res, next) {
-    res.sendFile(__dirname, '/index.html')
+app.get('/device', function(req, res) {
+    var light = req.query;
+    
+    // Puts all my data in nice JSON
+    res.json({
+        lightInfo: lightr.getStat(),
+        GET: light
+    });
+    console.log(light.state)
+
+    // If ?light=false turn the light off
+    if (light.state == 'false') {
+        lightr.off()
+        console.log('off')
+    }
+
+    // If ?light=true turn on the light
+    if (light.state == 'true') {
+        lightr.on()
+        console.log('on')
+    }
+    
 });
 
-io.on('connection', function (socket) {
-    console.log('A client has connected');
-    socket.on('on', function () {
-        io.emit('on')
-        on()
-    });
-
-    socket.on('off', function () {
-        io.emit('off')
-        off()
-    });
-
-    socket.on('brightness', function () {
-
-    });
-});
-
-const bulb = client.getBulb({ host: '192.168.1.42' });
-
-function setBright(brightness) {
-    bulb.lighting.setLightingState({brightness: 50})
-}
-
-function on() {
-    bulb.setPowerState(true);
-}
-
-function off() {
-    bulb.setPowerState(false);
-}
-
-server.listen(4200);
+app.listen(port, () => console.log(`Server is running on http://localhost:${port}`))

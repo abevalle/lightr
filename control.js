@@ -17,9 +17,8 @@ on: function () {
 },
 
 getStat:function () {
-    return bulb.then((device) => {
-         let status = device.getPowerState().then(console.log)
-         return status
+    bulb.then((device) => {
+         let status = device.getPowerState().then()
     });
     
 }
@@ -28,7 +27,6 @@ getStat:function () {
 function getStat() {
     return bulb.then((device) => {
        device.getPowerState().then(function(status) {
-           return
        })
     });
 }

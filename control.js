@@ -16,6 +16,13 @@ on: function () {
     });
 },
 
+toggle: function () {
+    bulb.then((device) => {
+        device.togglePowerState(true);
+        console.log('Notice: The light has been toggled')
+    });
+},
+
 getStat:function () {
     bulb.then((device) => {
          let status = device.getPowerState().then()

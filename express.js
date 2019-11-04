@@ -31,4 +31,9 @@ app.get('/device', function(req, res) {
     
 });
 
+
+app.get('/toggle', function(req, res) {
+    lightr.toggle()  
+});
+
 app.listen(port, () => console.log(`Server is running on`, `http://localhost:${port}`.underline.green))
